@@ -18,7 +18,7 @@ function createGrid(pxlside, width, height){
   container.style.width = pxlside * width + 'px';
 }
 
-createGrid(24,10,10);
+// createGrid(24,10,10);
 
 
 
