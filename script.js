@@ -94,6 +94,7 @@ scratchpad.addEventListener('mousedown', e => {
     });
   });
 });
+// createGrid(24,10,10);
 
 
 
