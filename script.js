@@ -1,5 +1,8 @@
 const scratchpad = document.querySelector('.scratchpad');
 const buttons = document.querySelectorAll('button');
+const opacityBtn = document.querySelector('.opacity-btn');
+const colorBtn = document.querySelector('.color-btn');
+const removeFeatures = document.querySelector('.remove-features');
 const contWidth = 800;
 const contHeight = 400;
 
@@ -76,8 +79,21 @@ buttons.forEach((btn) => {
   });
 });
   
+// console.log(getComputedStyle(buttons[1]).backgroundColor)
 
+// PAINT
 function paintHandler(){
+  if(feature){
+    switch (feature){
+      case 'opacity':
+        changeOpacity(this);
+      break;
+      case 'color':
+        changingColor(this);
+      break;
+    }
+    return;
+  }
   this.style.backgroundColor = 'rgb(135, 242, 28)';
 }
 
@@ -94,7 +110,41 @@ scratchpad.addEventListener('mousedown', e => {
     });
   });
 });
-// createGrid(24,10,10);
 
+// ADDITIONAL FEATURES
+let feature;
+
+function changeOpacity(element){
+  const bg = getComputedStyle(element).backgroundColor;
+  if(bg.slice(17,18) === '') return;
+
+  if(bg.at(3) != 'a'){
+    element.style.backgroundColor = 'rgba(135, 242, 28, 0.1)';
+  } else if(bg.at(3) == 'a'){
+    if(bg.at(-3) == '.'){
+      let opacity = (Number(bg.slice(18,22)));
+      opacity += 0.1;
+      element.style.backgroundColor = `rgba(135, 242, 28, ${opacity})`
+    }
+  }
+}
+
+function changingColor(element){
+  const bg = getComputedStyle(element).backgroundColor;
+  const red = Math.floor(Math.random()*200 + 1) + 50;
+  const green = Math.floor(Math.random()*200 + 1) + 50;
+  const blue = Math.floor(Math.random()*200 + 1) + 50;
+  element.style.backgroundColor = `rgb(${red}, ${green}, ${blue})`
+}
+
+opacityBtn.addEventListener('mouseup', function(){
+  feature = 'opacity';
+});
+colorBtn.addEventListener('mouseup', function(){
+  feature = 'color';
+});
+removeFeatures.addEventListener('mouseup', function(){
+  feature = '';
+});
 
 
