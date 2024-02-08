@@ -1,8 +1,4 @@
 const scratchpad = document.querySelector('.scratchpad');
-const buttons = document.querySelectorAll('button');
-const opacityBtn = document.querySelector('.opacity-btn');
-const colorBtn = document.querySelector('.color-btn');
-const removeFeatures = document.querySelector('.remove-features');
 const contWidth = 800;
 const contHeight = 400;
 
@@ -29,6 +25,7 @@ function createGrid(pxlside){
 }
 createGrid(16);
 
+const buttons = document.querySelectorAll('button');
 // CONTROLS
 buttons.forEach((btn) => {
   btn.addEventListener('mouseover', e => {
@@ -78,15 +75,13 @@ buttons.forEach((btn) => {
     }
   });
 });
-  
-// console.log(getComputedStyle(buttons[1]).backgroundColor)
 
 // PAINT
 function paintHandler(){
   if(feature){
     switch (feature){
       case 'opacity':
-        changeOpacity(this);
+        changingOpacity(this);
       break;
       case 'color':
         changingColor(this);
@@ -94,7 +89,7 @@ function paintHandler(){
     }
     return;
   }
-  this.style.backgroundColor = 'rgb(135, 242, 28)';
+  this.style.backgroundColor = mainColor;
 }
 
 scratchpad.addEventListener('mousedown', e => {
@@ -111,21 +106,53 @@ scratchpad.addEventListener('mousedown', e => {
   });
 });
 
-// ADDITIONAL FEATURES
+// ADDITIONAL FEATURES BUTTONS
 let feature;
+const opacityBtn = document.querySelector('.opacity-btn');
+const colorBtn = document.querySelector('.color-btn');
+const removeFeatures = document.querySelector('.remove-features');
 
-function changeOpacity(element){
+opacityBtn.addEventListener('mouseup', function(){
+  feature = 'opacity';
+});
+colorBtn.addEventListener('mouseup', function(){
+  feature = 'color';
+});
+removeFeatures.addEventListener('mouseup', function(){
+  feature = '';
+});
+
+// CHANGE OPACITY FEATURE
+function changingOpacity(element){
   const bg = getComputedStyle(element).backgroundColor;
-  if(bg.slice(17,18) === '') return;
+  if(bg == mainColor) return;
 
-  if(bg.at(3) != 'a'){
-    element.style.backgroundColor = 'rgba(135, 242, 28, 0.1)';
-  } else if(bg.at(3) == 'a'){
-    if(bg.at(-3) == '.'){
-      let opacity = (Number(bg.slice(18,22)));
-      opacity += 0.1;
-      element.style.backgroundColor = `rgba(135, 242, 28, ${opacity})`
-    }
+  if(bg.at(3) != 'a' && bg != 'rgb(255, 255, 255)') {
+    element.style.backgroundColor = mainColor;
+    return;
+  }
+
+  if(bg == 'rgb(255, 255, 255)'){ //CHECK IF THE PIXEL IS WHITE
+    let color = mainColor.split('');
+    color.splice(3,0,'a');
+    color.splice(color.indexOf(')'), 0, ', 0.1');
+    color = color.join('');
+
+    element.style.backgroundColor = color;
+    return;
+  }
+
+  let currOpacity = (bg.split(',')[3].replace(')', ''));
+  currOpacity = Number(currOpacity);
+  if(currOpacity != 1){
+    const finalOpacity = currOpacity + 0.1;
+    let finColor = mainColor.split(',');
+    finColor[0] = finColor[0].slice(4,8);
+    finColor = finColor.join() + ',';
+    finColor = finColor.replace(')', '');
+    console.log(finColor);
+
+    element.style.backgroundColor = `rgba(${finColor} ${finalOpacity})`
   }
 }
 
@@ -137,14 +164,49 @@ function changingColor(element){
   element.style.backgroundColor = `rgb(${red}, ${green}, ${blue})`
 }
 
-opacityBtn.addEventListener('mouseup', function(){
-  feature = 'opacity';
+const redBtn = document.querySelector('.red');
+const greenBtn = document.querySelector('.green');
+const yellowBtn = document.querySelector('.yellow');
+const blueBtn = document.querySelector('.blue');
+const colorBtns = document.querySelectorAll('.color');
+let mainColor = 'rgb(135, 242, 28)';
+
+redBtn.addEventListener('mouseup', e =>{
+  mainColor = 'rgb(255, 0, 0)';
+  colorBtns.forEach((button) => {
+    button.classList.remove('btn-selected');
+  });
+  redBtn.classList.add('btn-selected')
 });
-colorBtn.addEventListener('mouseup', function(){
-  feature = 'color';
+greenBtn.addEventListener('mouseup', e =>{
+  mainColor = 'rgb(135, 242, 28)';
+  colorBtns.forEach((button) => {
+    button.classList.remove('btn-selected');
+  });
+  greenBtn.classList.add('btn-selected')
 });
-removeFeatures.addEventListener('mouseup', function(){
-  feature = '';
+yellowBtn.addEventListener('mouseup', e =>{
+  mainColor = 'rgb(255, 255, 0)';
+  colorBtns.forEach((button) => {
+    button.classList.remove('btn-selected');
+  });
+  yellowBtn.classList.add('btn-selected')
 });
+blueBtn.addEventListener('mouseup', e =>{
+  mainColor = 'rgb(0, 0 , 255)';
+  colorBtns.forEach((button) => {
+    button.classList.remove('btn-selected');
+  });
+  blueBtn.classList.add('btn-selected')
+});
+
+// let color = 'rgba(25, 234, 231, 0.5)';
+// let colorArr = color.split(',');
+// colorArr[0] = colorArr[0].slice(5,7);
+// colorArr.pop();
+
+// console.log(colorArr.join())
+
+
 
 
