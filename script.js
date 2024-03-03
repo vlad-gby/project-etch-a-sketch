@@ -163,41 +163,20 @@ function changingColor(element){
   element.style.backgroundColor = `rgb(${red}, ${green}, ${blue})`
 }
 
-const redBtn = document.querySelector('.red');
-const greenBtn = document.querySelector('.green');
-const yellowBtn = document.querySelector('.yellow');
-const blueBtn = document.querySelector('.blue');
-const colorBtns = document.querySelectorAll('.color');
+const colors = document.querySelectorAll('.color');
 let mainColor = 'rgb(135, 242, 28)';
 
-redBtn.addEventListener('mouseup', e =>{
-  mainColor = 'rgb(255, 0, 0)';
-  colorBtns.forEach((button) => {
-    button.classList.remove('btn-selected');
+colors.forEach(color => {
+  color.addEventListener('mouseup', e => {
+    mainColor = getComputedStyle(color).backgroundColor;
+    colors.forEach(button => {
+      button.classList.remove('btn-selected');
+    });
+    color.classList.add('btn-selected');
   });
-  redBtn.classList.add('btn-selected')
 });
-greenBtn.addEventListener('mouseup', e =>{
-  mainColor = 'rgb(135, 242, 28)';
-  colorBtns.forEach((button) => {
-    button.classList.remove('btn-selected');
-  });
-  greenBtn.classList.add('btn-selected')
-});
-yellowBtn.addEventListener('mouseup', e =>{
-  mainColor = 'rgb(255, 255, 0)';
-  colorBtns.forEach((button) => {
-    button.classList.remove('btn-selected');
-  });
-  yellowBtn.classList.add('btn-selected')
-});
-blueBtn.addEventListener('mouseup', e =>{
-  mainColor = 'rgb(0, 0 , 255)';
-  colorBtns.forEach((button) => {
-    button.classList.remove('btn-selected');
-  });
-  blueBtn.classList.add('btn-selected')
-});
+
+
 
 
 
