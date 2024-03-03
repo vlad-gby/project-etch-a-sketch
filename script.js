@@ -190,7 +190,7 @@ colorSubmit.addEventListener('mouseup', e => {
   newColor.classList.add('color');
   newColor.style.backgroundColor = inputColor.value;
   newColor.addEventListener('mouseup', e => {
-    makeMainColor(newColor);
+  makeMainColor(newColor);
   });
 
   pallette.appendChild(newColor);
@@ -199,7 +199,10 @@ colorSubmit.addEventListener('mouseup', e => {
 });
 
 colorDel.addEventListener('mouseup', e => {
+  if(!colors[1]) return;
   document.querySelector('.btn-selected').remove();
+  colors = document.querySelectorAll('.color');
+  makeMainColor(colors[0]);
 });
 
 
