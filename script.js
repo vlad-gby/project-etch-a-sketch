@@ -163,21 +163,44 @@ function changingColor(element){
   element.style.backgroundColor = `rgb(${red}, ${green}, ${blue})`
 }
 
-const colors = document.querySelectorAll('.color');
+// WORKING WITH COLORS
+const inputColor = document.querySelector('#add-color');
+const pallette = document.querySelector('.pallette');
+const colorSubmit = document.querySelector('.submit-clr');
+const colorDel = document.querySelector('.delete-clr');
+let colors = document.querySelectorAll('.color');
 let mainColor = 'rgb(135, 242, 28)';
 
-colors.forEach(color => {
-  color.addEventListener('mouseup', e => {
-    mainColor = getComputedStyle(color).backgroundColor;
-    colors.forEach(button => {
-      button.classList.remove('btn-selected');
-    });
-    color.classList.add('btn-selected');
+function makeMainColor(colorBtn){
+  colors.forEach(button => {
+    button.classList.remove('btn-selected');
+  });
+  mainColor = getComputedStyle(colorBtn).backgroundColor;
+  colorBtn.classList.add('btn-selected');
+}
+
+colors.forEach(button => {
+  button.addEventListener('mouseup', e => {
+    makeMainColor(button);
   });
 });
 
+colorSubmit.addEventListener('mouseup', e => {
+  const newColor = document.createElement('div');
+  newColor.classList.add('color');
+  newColor.style.backgroundColor = inputColor.value;
+  newColor.addEventListener('mouseup', e => {
+    makeMainColor(newColor);
+  });
 
+  pallette.appendChild(newColor);
+  colors = document.querySelectorAll('.color');
+  makeMainColor(newColor);
+});
 
+colorDel.addEventListener('mouseup', e => {
+  document.querySelector('.btn-selected').remove();
+});
 
 
 
