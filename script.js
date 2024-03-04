@@ -92,17 +92,19 @@ function paintHandler(){
   this.style.backgroundColor = mainColor;
 }
 
+
 scratchpad.addEventListener('mousedown', e => {
   const pixels = document.querySelectorAll('.pixel');
-
   pixels.forEach((pixel) => {
     pixel.addEventListener('mouseover', paintHandler);
+    pixel.addEventListener('click', paintHandler);
 
     pixel.addEventListener('mouseup', () => {
       pixels.forEach((pixel) => {
         pixel.removeEventListener('mouseover', paintHandler);
       });
     });
+    
   });
 });
 
@@ -172,27 +174,28 @@ let colors = document.querySelectorAll('.color');
 let mainColor = 'rgb(135, 242, 28)';
 
 function makeMainColor(colorBtn){
+  if(!colorBtn.classList.contains('color')) return;
   colors.forEach(button => {
-    button.classList.remove('btn-selected');
+    button.children[0].style.display = 'none';
+    button.classList.remove('selected');
   });
   mainColor = getComputedStyle(colorBtn).backgroundColor;
-  colorBtn.classList.add('btn-selected');
+
+  colorBtn.children[0].style.display = 'block';
+  colorBtn.classList.add('selected');
 }
 
-colors.forEach(button => {
-  button.addEventListener('mouseup', e => {
-    makeMainColor(button);
-  });
+colors[0].addEventListener('mouseup', e => {
+  makeMainColor(e.target);
 });
 
 colorSubmit.addEventListener('mouseup', e => {
-  const newColor = document.createElement('div');
-  newColor.classList.add('color');
+  newColor = document.querySelector('.color:last-child').cloneNode(true);
   newColor.style.backgroundColor = inputColor.value;
   newColor.addEventListener('mouseup', e => {
-  makeMainColor(newColor);
+    makeMainColor(e.target);
   });
-
+  
   pallette.appendChild(newColor);
   colors = document.querySelectorAll('.color');
   makeMainColor(newColor);
@@ -200,7 +203,7 @@ colorSubmit.addEventListener('mouseup', e => {
 
 colorDel.addEventListener('mouseup', e => {
   if(!colors[1]) return;
-  document.querySelector('.btn-selected').remove();
+  document.querySelector('.selected').remove();
   colors = document.querySelectorAll('.color');
   makeMainColor(colors[0]);
 });
