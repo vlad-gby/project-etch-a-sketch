@@ -22,6 +22,9 @@ body{
   align-items: center;
   gap: 8px;
 }
+.remove-features{
+  margin-top: 12px;
+}
 
 button{
   width: fit-content;
